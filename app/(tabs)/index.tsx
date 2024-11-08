@@ -1,15 +1,16 @@
-import { Image, StyleSheet, Platform, View, Text, TextInput, ScrollView, FlatList } from 'react-native';
+import { Image, StyleSheet, Platform, View, Text, TextInput, ScrollView, FlatList, TouchableOpacity, Dimensions } from 'react-native';
 
 import React from 'react';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { CardProps } from '@/utils/types/cardProps.types';
+import { DataList } from '@/utils/data-list';
 
-type CardProps = {
-  title: string,
-  design: number,
-  url: string
-}
+import { NavigationProp } from '@react-navigation/native';
+import { Link } from 'expo-router';
 
-export default function HomeScreen() {
+const width = Dimensions.get('window').width / 2 - 30;
+
+export default function HomeScreen({ navigation }: { navigation: NavigationProp<any> }) {
 
   const SearchInputBar = () => {
     return (
@@ -29,68 +30,30 @@ export default function HomeScreen() {
     )
   }
 
-  const DataList: CardProps[] = [
-    {
-      title: 'Suits',
-      design: 25,
-      url: 'https://www.pexels.com/photo/stylish-woman-posing-in-sportwear-ensemble-28744548/'
-    },
-    {
-      title: 'Two Piece',
-      design: 25,
-      url: 'https://www.pexels.com/photo/portrait-of-man-in-sunglasses-wearing-orange-shirt-outdoors-29205214/ '
-    },
-    {
-      title: 'Polo',
-      design: 25,
-      url: 'https://www.pexels.com/photo/athletic-male-in-stylish-activewear-on-rooftop-29205185/'
-    },
-    {
-      title: 'Native',
-      design: 25,
-      url: 'https://www.pexels.com/photo/athletic-male-in-stylish-activewear-on-rooftop-29205185/'
-    },
-    {
-      title: 'Skirt',
-      design: 25,
-      url: 'https://www.pexels.com/photo/athletic-male-in-stylish-activewear-on-rooftop-29205185/'
-    },
-    {
-      title: 'Jeans',
-      design: 25,
-      url: 'https://www.pexels.com/photo/athletic-male-in-stylish-activewear-on-rooftop-29205185/'
-    },
-    {
-      title: 'Adgbada',
-      design: 25,
-      url: 'https://www.pexels.com/photo/athletic-male-in-stylish-activewear-on-rooftop-29205185/'
-    },
-  ]
-
   const ShowroomCard = ({ design, title, url }: CardProps) => {
     return (
-      <View style={styles.showroomCard}>
+      <Link style={styles.showroomCard} href="/details">
         <Image
-          style={styles.showroomImage}
-          source={require('./../../assets/images/product.jpg')}
+          style={styles.showroomImage} source={url}
         />
         <View style={styles.showroomDetails}>
           <Text style={{ fontWeight: 'bold', fontSize: 18 }}>{title}</Text>
-          <Text style={{ fontWeight: 'bold', fontSize: 16 }}>{design} Designs</Text>
+          <Text style={{ fontWeight: '500', fontSize: 16 }}>{design} Designs</Text>
         </View>
-      </View>
+      </Link>
     )
   }
 
   const DisplayShowRoom = () => {
     return (
       <FlatList
+        showsVerticalScrollIndicator={false}
         data={DataList}
         renderItem={({ item }) => <ShowroomCard {...item} />}
         numColumns={2}
         columnWrapperStyle={{
           justifyContent: 'space-between',
-          // Space between columns
+          flexWrap: 'wrap'
         }}
         contentContainerStyle={{ alignItems: 'center' }}
         keyExtractor={(item) => item.title} />
@@ -98,19 +61,16 @@ export default function HomeScreen() {
   }
 
   return (
-    <ScrollView style={styles.container}>
+    <View style={styles.container}>
       <View style={styles.topValues}>
         <View style={styles.userInfo}>
           <Image
             style={styles.userPhoto}
             source={require('./../../assets/images/profile.jpg')}
           />
-          {/* <Image style={styles.userPhoto} source={{
-            uri: 'https://www.pexels.com/photo/woman-in-collared-shirt-774909/'
-          }} /> */}
           <View>
             <Text style={{ fontWeight: '800', fontSize: 18 }}>Hi Tomiwa,</Text>
-            <Text style={{ fontWeight: '800', fontSize: 18 }}>Good Morning</Text>
+            <Text style={{ fontWeight: '500', fontSize: 18 }}>Good Morning</Text>
           </View>
         </View>
         <View>
@@ -118,9 +78,9 @@ export default function HomeScreen() {
         </View>
       </View>
       <SearchInputBar />
-      <Text style={{ fontWeight: 'bold', fontSize: 20, marginVertical: 12 }}>Showroom</Text>
+      <Text style={{ fontWeight: 'bold', fontSize: 20, marginVertical: 12, marginLeft: 5 }}>Showroom</Text>
       <DisplayShowRoom />
-    </ScrollView >
+    </View >
   );
 }
 
@@ -161,15 +121,20 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
   },
   showroomCard: {
-    width: '48%',
-
+    width,
+    marginBottom: 20,
+    height: 225,
+    marginHorizontal: 2,
+    borderRadius: 10,
+    padding: 15,//you might consider removing thi padding after viewing the output code
   },
   showroomImage: {
+    flex: 1,
     height: 150,
     width: '100%',
     resizeMode: 'cover',
     borderRadius: 10,
-    marginBottom: 10,
+    marginBottom: 4,
     shadowColor: '#000',
   },
   showroomDetails: {
@@ -177,5 +142,6 @@ const styles = StyleSheet.create({
   },
   showroom: {
     width: '100%',
-  }
+  },
+
 });
