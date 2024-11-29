@@ -8,7 +8,18 @@ export default function TweetContent({ product }: any) {
             <Image source={product.url}
                 style={{ height: 150, width: '100%', borderRadius: 10, objectFit: 'cover' }} />
             <Text style={{ fontWeight: 600 }}>{product.title}</Text>
-            <Text>{product.design}</Text>
+            <Text>{product.design} Designs</Text>
+        </View>
+    )
+}
+export function TweetContent2({ product }: any) {
+
+    return (
+        <View>
+            <Image source={product.image}
+                style={{ height: 150, width: '100%', borderRadius: 10, objectFit: 'cover' }} />
+            <Text style={{ fontWeight: 600 }}>{product.title}</Text>
+            <Text>{product.price}</Text>
         </View>
     )
 }
